@@ -1,0 +1,3 @@
+loop S c, a, b
+    BZ c, done
+    BP c, done

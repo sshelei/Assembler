@@ -1,0 +1,7 @@
+    LA sum, 0
+loop L c, stdin
+    BZ c, done
+    A sum, sum, c
+    BZ 0, loop
+done ST sum, stdout
+    H

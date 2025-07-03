@@ -1,15 +1,27 @@
 public class Symbol {
     private String symbol;
+    private int loc; 
+    private String stored;
     private int state;
+
     public Symbol() {
-        this("null", 0);
+        this(0, "null", "null", 0);
     }
-    public Symbol (String item, int s) {
-        symbol = item;
+    public Symbol (int addr, String sym, String storage, int s) {
+        symbol = sym;
+        loc = addr;
+        stored = storage;
         state = s;
+      
     }
     public String getSymbol() {
         return symbol;
+    }
+    public int getAddress() {
+        return loc;
+    }
+    public String getActualValue() {
+        return stored;
     }
     public int getState() {
         return state;

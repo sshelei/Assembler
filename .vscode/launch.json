@@ -6,6 +6,21 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TOY",
+            "request": "launch",
+            "mainClass": "TOY",
+            "projectName": "Assembler_13608e40"
+            ,"args": "${command:SpecifyProgramArgs}"
+        },
+        {
+            "type": "java",
+            "name": "AssemblerTest",
+            "request": "launch",
+            "mainClass": "AssemblerTest",
+            "projectName": "Assembler_13608e40"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
@@ -15,8 +30,8 @@
             "name": "Assembler",
             "request": "launch",
             "mainClass": "Assembler",
-            "projectName": "Assembler_13608e40"
-            ,"args": "${command:SpecifyProgramArgs}"
+            "projectName": "Assembler_13608e40",
+            "args": "${command:SpecifyProgramArgs}"
         },
         {
             "type": "java",

@@ -1,0 +1,13 @@
+     LA one, 1
+     LA a, 0
+     LA b, 1 
+     L i, N
+loop BZ i, done
+     ST a, stdout
+     A c, a, b
+     A a, b, 0
+     A b, c, 0
+     S i, i, one
+     BZ 0, loop
+done H
+N    000C

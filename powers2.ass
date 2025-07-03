@@ -1,0 +1,6 @@
+    L a, one
+done ST a, stdout
+    A a, a, a
+loop BP a done
+    H
+    one   1

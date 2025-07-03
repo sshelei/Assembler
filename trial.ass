@@ -1,8 +1,0 @@
-    LA one, 1
-    LA a, 0
-    LA b, 1
-    L i, N
-    A c, a, b
-    S i, i, one
-    H
-N   000C

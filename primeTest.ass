@@ -1,0 +1,15 @@
+     LA one, 1
+     LA limit, 255
+     LA i, 1
+     S counter, limit, i
+loop BZ counter, done
+     A i, i, one
+     A a, 0, i, break
+     L b, p
+     JL store, 22
+     S a, a, one
+loop BZ a, break
+done ST b, x
+     H
+p    005B
+x    0000
