@@ -1,29 +1,25 @@
 public class Symbol {
-    private String symbol;
-    private int loc; 
-    private String stored;
-    private int state;
+    private String symbol; // symbolic name
+    private int loc;  // actual in TOY
 
     public Symbol() {
-        this(0, "null", "null", 0);
+        this(-2, "null");
     }
-    public Symbol (int addr, String sym, String storage, int s) {
+
+    public Symbol (int addr, String sym) {
         symbol = sym;
-        loc = addr;
-        stored = storage;
-        state = s;
-      
+        loc = addr; 
     }
+
     public String getSymbol() {
         return symbol;
     }
+
     public int getAddress() {
         return loc;
     }
-    public String getActualValue() {
-        return stored;
-    }
-    public int getState() {
-        return state;
+
+    public void reset() {
+        loc = -2;
     }
 }
