@@ -1,6 +1,6 @@
      LA one, 1
-     LA a, 0
-     LA b, 1 
+     LA a, 1
+     LA b, 2
      L i, N
 loop BZ i, done
      ST a, stdout
@@ -10,4 +10,4 @@ loop BZ i, done
      S i, i, one
      BZ 0, loop
 done H
-N    000C
+N    000A

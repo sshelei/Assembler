@@ -6,11 +6,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "test",
+            "request": "launch",
+            "mainClass": "test",
+            "projectName": "Assembler_13608e40"
+        },
+        {
+            "type": "java",
             "name": "TOY",
             "request": "launch",
             "mainClass": "TOY",
-            "projectName": "Assembler_13608e40"
-            ,"args": "${command:SpecifyProgramArgs}"
+            "projectName": "Assembler_13608e40",
+            "args": "${command:SpecifyProgramArgs}"
         },
         {
             "type": "java",

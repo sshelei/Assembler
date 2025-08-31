@@ -128,20 +128,36 @@ public class TOY {
             // Execute
             switch (op) {
                 case  1: reg[d] = reg[s] +  reg[t];           break;    // add
-                case  2: reg[d] = reg[s] -  reg[t];           break;    // subtract
+                case  2: 
+                    reg[d] = reg[s] -  reg[t];           
+                    break;    // subtract
                 case  3: reg[d] = reg[s] &  reg[t];           break;    // bitwise and
                 case  4: reg[d] = reg[s] ^  reg[t];           break;    // bitwise xor
                 case  5: reg[d] = reg[s] << reg[t];           break;    // shift left
                 case  6: reg[d] = (short) reg[s] >> reg[t];   break;    // shift right
                 case  7: reg[d] = addr;                       break;    // load address
-                case  8: reg[d] = mem[addr];                  break;    // load
-                case  9: mem[addr] = reg[d];                  break;    // store
+                case  8: 
+                    reg[d] = mem[addr];   
+                    System.out.println("Load into Reg " + d + " with contents " + mem[addr] + " from " + addr);               
+                break;    // load
+                case  9: 
+                    mem[addr] = reg[d];
+                    System.out.println("Store Reg " + d + " with contents " + reg[d] + " at " + addr);                  
+                    break;    // store
                 case 10: reg[d] = mem[reg[t] & 255];          break;    // load indirect
                 case 11: mem[reg[t] & 255] = reg[d];          break;    // store indirect
-                case 12: if ((short) reg[d] == 0) pc = addr;  break;    // branch if zero
+                case 12: 
+                    if ((short) reg[d] == 0) 
+                    pc = addr;  break;    
+                    // branch if zero
                 case 13: if ((short) reg[d] >  0) pc = addr;  break;    // branch if positive
-                case 14: pc = reg[d];                         break;    // jump indirect
-                case 15: reg[d] = pc; pc = addr;              break;    // jump and link
+                case 14: 
+                    pc = reg[d];                       
+                    break;    // jump indirect
+                case 15: 
+                    reg[d] = pc; 
+                    pc = addr;              
+                    break;    // jump and link
             }
 
             // stdout

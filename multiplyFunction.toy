@@ -15,11 +15,6 @@
 19: 9CFF   write R[C]                    
 1A: 0000   halt                          
 
-function multiply
-// Input:                R[A] and R[B] (should be passed by value)
-// Return address:       R[F]
-// Output:               R[C] = R[A] * R[B]
-// Temporary variables:  R[1] = 1
 
 30: 7C00   R[C] <- 0000                  
 31: 7101   R[1] <- 0001                  

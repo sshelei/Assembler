@@ -1,0 +1,11 @@
+    L one, a
+    L two, b
+end A four, two, one
+    LI three, 0, two
+    ST three, stdout
+    LI two, 0, four
+    BP two, end
+    H
+a  0001
+b  00D0
+

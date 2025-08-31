@@ -2,14 +2,14 @@
      LA limit, 255
      LA i, 1
      S counter, limit, i
-loop BZ counter, done
-     A i, i, one
-     A a, 0, i, break
+     BZ counter, done
+end  A i, i, one
+     A a, 0, i
      L b, p
      JL store, 22
      S a, a, one
-loop BZ a, break
+     BZ a, end
 done ST b, x
-     H
+     H 
 p    005B
 x    0000
