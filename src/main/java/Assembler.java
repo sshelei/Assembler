@@ -550,7 +550,6 @@ public class Assembler {
             }   
             k++;
         }
-        System.out.println("HI");
     }
     public void setFlagsToCurrent (String sym, char flag) {
         if (flag == 'A') {

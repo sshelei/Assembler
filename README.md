@@ -7,7 +7,7 @@ records.
 
 The stable baseline is commit `3825d90`. Experimental register-allocation and
 symbol-tracking work is preserved separately on the `improvements` branch and
-is described in [IMPROVEMENTS.md](IMPROVEMENTS.md).
+is described in [allocator-experiments.md](.md).
 
 ## Requirements
 
@@ -23,9 +23,20 @@ replace the class files stored in the repository:
 
 ```bash
 mkdir -p build
-javac -d build *.java
 ```
 
+Compile framework and main separately
+```bash
+javac -d build src/framework/java/*.java
+javac -cp build -d build src/main/java/*.java
+```
+or together
+```bash
+javac -d build \
+  src/framework/java/*.java \
+  src/main/java/*.java
+
+```
 The compiler currently reports a deprecation note for `In.java`; it does not
 prevent compilation.
 
@@ -111,6 +122,7 @@ files. Keep every source line nonempty.
 
 ## Included programs and verified behavior
 
+The assembly language programs tested and the intended TOY programs can be found in `examples/`. 
 The following checks were performed by assembling into temporary files and
 then running those files in `TOY`:
 
@@ -119,13 +131,12 @@ then running those files in `TOY`:
 | `fibonacci.ass` | `40` | Prints ten values from `0001` through `0059` |
 | `powers2.ass` | `30` | Prints powers of two from `0001` through `4000` |
 | `sum.ass` | `30` | Correctly sums hexadecimal input until zero |
-| `linkedlist.ass` | `30` | Assembles after its trailing blank line is removed; requires list data at `D0`-`DF` |
-| `primeTest.ass` | `30` | Assembles; requires a subroutine at `22`-`29` |
-| `GCD.ass` | — | Unfinished and not part of the verified set |
+| `linkedlist.ass` | `30` | Assembles; requires list data at `C0`-`CF` |
+| `primeTest.ass`	 | `30`	| Assembles; requires a subroutine at 22-29 |
 
-`linkedlist.toy` contains sample linked-list memory at `D0`-`DF`.
-`primeTest.toy` contains the additional routine at `22`-`29`. The corresponding
-`.ass` sources do not emit those external memory regions by themselves.
+`linkedlist.toy` contains sample linked-list memory at `C0`- `CF`. 
+`primeTest.toy` contains the additional routine at `22`- `29`. 
+The corresponding `.ass` sources do not emit those external memory regions by themselves. The code for the external memory regions is in `examples/fixtures/`. See the README.md in `examples/` for more information about these two commands.
 
 ## Project files
 
