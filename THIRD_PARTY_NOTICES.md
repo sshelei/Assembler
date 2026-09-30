@@ -12,17 +12,19 @@ The following tracked files are not original to this repository:
 
 | Local file | Upstream source | Authors |
 | --- | --- | --- |
-| `src/framework/java/In.java` | [Princeton `In.java`](https://introcs.cs.princeton.edu/java/stdlib/In.java) | Robert Sedgewick and Kevin Wayne |
-| `src/framework/java/StdIn.java` | [Princeton `StdIn.java`](https://introcs.cs.princeton.edu/java/stdlib/StdIn.java) | Robert Sedgewick and Kevin Wayne |
+| `src/framework/java/In.java` | [Princeton `In.java`](https://introcs.cs.princeton.edu/java/stdlib/In.java) | David Pritchard, Robert Sedgewick, and Kevin Wayne |
+| `src/framework/java/StdIn.java` | [Princeton `StdIn.java`](https://introcs.cs.princeton.edu/java/stdlib/StdIn.java) | Robert Sedgewick, Kevin Wayne, and David Pritchard |
 | `src/framework/java/StdOut.java` | [Princeton `StdOut.java`](https://introcs.cs.princeton.edu/java/stdlib/StdOut.java) | Robert Sedgewick and Kevin Wayne |
 
-The local copies retain their upstream authorship and documentation. If a copy
-is modified, record the modification without removing the original notices.
+The local copies retain their upstream authorship and documentation. Each file
+contains a dated notice describing its local formatting or warning-suppression
+changes, as required for redistribution of modified GPL-covered source.
 
 Princeton's [standard-library page](https://introcs.cs.princeton.edu/java/stdlib/)
 states that `stdlib.jar` is distributed under the GNU General Public License,
-version 3 (GPLv3). The complete, unmodified license text is included at
-`LICENSES/GPL-3.0.txt` and is also available from the
+version 3 (GPLv3). The complete, unmodified license text is included in the
+root `COPYING` file, with an additional copy at `LICENSES/GPL-3.0.txt`, and is
+also available from the
 [GNU Project](https://www.gnu.org/licenses/gpl-3.0.txt).
 
 The GPL is a copyleft license, not merely an attribution requirement. The
@@ -55,7 +57,11 @@ The following tracked files contain the original assembler implementation:
 - `src/main/java/Symbol.java`
 - `src/main/java/SymbolTable.java`
 
-A separate project-wide license has not yet been added. Because the compiled
-application uses GPLv3-covered standard-library classes, choose project terms
-that are compatible with those obligations before distributing a combined
-binary.
+Copyright (C) 2026 Sherry Lei.
+
+These files, along with the project's assembly examples and documentation, are
+released as part of TOY Assembler under the GNU General Public License, version
+3 only. Each Java source file contains the copying-permission and warranty
+notices recommended by the GNU Project. The assembly syntax does not support
+comments, so the project-wide notice in `README.md` identifies the license for
+the `.ass` files.

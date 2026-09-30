@@ -3,3 +3,5 @@ target/
 build/
 experiments/
 vendor/
+.vscode/
+.devcontainer/

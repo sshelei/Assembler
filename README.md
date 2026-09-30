@@ -170,11 +170,17 @@ LICENSES/               third-party license texts
   allocation convention.
 - There is no automated regression-test suite or CI workflow yet.
 
-## Attribution and licensing
+## License
+
+Copyright (C) 2026 Sherry Lei.
+
+TOY Assembler is free software licensed under the GNU General Public License,
+version 3 only. This applies to the original Java sources, assembly examples,
+and project documentation except where third-party authorship is identified.
+The complete license is in [`COPYING`](COPYING).
 
 `In.java`, `StdIn.java`, and `StdOut.java` come from the Princeton IntroCS
-standard library, which Princeton identifies as GPLv3. The complete license is
-included at `LICENSES/GPL-3.0.txt`. `TOY.java` is not tracked in the current
-revision and is downloaded by the user. Review
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before licensing or
-distributing the combined application.
+standard library, which Princeton identifies as GPLv3. Their original
+authorship is preserved in the source files and documented in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). `TOY.java` is not tracked in
+the current revision and is downloaded separately by the user.

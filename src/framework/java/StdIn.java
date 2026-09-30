@@ -1,4 +1,28 @@
 /******************************************************************************
+ * Copyright (C) 2000-2022 Robert Sedgewick and Kevin Wayne.
+ * Authors: Robert Sedgewick, Kevin Wayne, and David Pritchard.
+ * Source: https://introcs.cs.princeton.edu/java/stdlib/StdIn.java
+ *
+ * This file is part of the Princeton IntroCS standard library.
+ *
+ * The Princeton IntroCS standard library is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, version 3 of the
+ * License.
+ *
+ * The Princeton IntroCS standard library is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Local modification notice (2026-09-29): formatting differs from the
+ * upstream source; no functional changes were identified.
+ ******************************************************************************/
+
+/******************************************************************************
  *  Compilation:  javac StdIn.java
  *  Execution:    java StdIn   (interactive test of basic functionality)
  *  Dependencies: none
