@@ -1,96 +1,125 @@
 # TOY Assembler
 
-This repository contains a Java assembler and simulator for Princeton's TOY
-computer. `Assembler` translates the symbolic assembly syntax used by the
-included `.ass` files into TOY memory records. `TOY` loads and executes those
-records.
+A Java assembler for Princeton's 16-bit TOY computer. It translates a small
+symbolic assembly language—with labels and symbolic values—into TOY memory
+records. Generated programs can be executed with Princeton's TOY simulator,
+which users download directly from its official source page.
 
-The stable baseline is commit `3825d90`. Experimental register-allocation and
-symbol-tracking work is preserved separately on the `improvements` branch and
-is described in [allocator-experiments.md](.md).
+The assembler, symbol model, and register/cache allocation code in
+`src/main/java` are the original project. The console utilities in
+`src/framework/java` are derived from Princeton instructional sources; see
+[Third-party notices](THIRD_PARTY_NOTICES.md). The current source tree does not
+include `TOY.java`; users download it directly from Princeton.
+
+## What this project demonstrates
+
+- Instruction parsing and encoding for all 16 TOY opcodes
+- Symbol, label, register, heap, and spill-cache bookkeeping
+- Forward and backward branch generation
+- End-to-end assembly and execution of example programs
+- Integration of code with separately initialized memory and subroutines
 
 ## Requirements
 
-- A Java Development Kit (JDK). Java 17 or newer is recommended.
-- A shell for the examples below. On Windows, Git Bash or WSL works.
+- JDK 17 or newer
+- A shell such as Bash, Git Bash, or WSL for the commands below
+- `curl`, or a browser for downloading Princeton's `TOY.java`
 
-No third-party Java libraries are required.
+`In.java`, `StdIn.java`, and `StdOut.java` are vendored under their documented
+GPLv3 terms. `TOY.java` must be downloaded separately and is ignored by Git.
 
 ## Build
 
-Compile into a separate directory so that generated `.class` files do not
-replace the class files stored in the repository:
+From the repository root, download the simulator into the ignored `vendor`
+directory:
 
 ```bash
-mkdir -p build
+mkdir -p build vendor
+curl --fail --location \
+  https://introcs.cs.princeton.edu/java/64simulator/TOY.java \
+  --output vendor/TOY.java
 ```
 
-Compile framework and main separately
-```bash
-javac -d build src/framework/java/*.java
-javac -cp build -d build src/main/java/*.java
-```
-or together
+Then compile the retained framework utilities, original assembler, and local
+simulator together:
+
 ```bash
 javac -d build \
   src/framework/java/*.java \
-  src/main/java/*.java
-
+  src/main/java/*.java \
+  vendor/TOY.java
 ```
-The compiler currently reports a deprecation note for `In.java`; it does not
-prevent compilation.
 
-## Assemble a program
+The framework and application can also be compiled separately, but the second
+command must include the compiled framework on its classpath:
 
 ```bash
-java -cp build Assembler START_ADDRESS INPUT.ass OUTPUT.toy
+javac -d build src/framework/java/*.java
+javac -cp build -d build src/main/java/*.java vendor/TOY.java
 ```
 
-`START_ADDRESS` is hexadecimal. For example:
+`In.java` currently produces a deprecation note; it does not prevent a
+successful build.
+
+## Quick start
+
+Assemble the sum example at hexadecimal address `30`:
 
 ```bash
-java -cp build Assembler 30 sum.ass sum-generated.toy
+java -cp build Assembler 30 \
+  examples/programs/sum.ass \
+  build/sum.toy
 ```
 
-The generated file contains one 16-bit TOY word per line:
+Run it with the values 2, 4, and 8. A zero terminates input:
+
+```bash
+printf '0002\n0004\n0008\n0000\n' | \
+  java -cp build TOY build/sum.toy 30
+```
+
+The final result is `000E`.
+
+General command forms:
+
+```bash
+java -cp build Assembler START_HEX INPUT.ass OUTPUT.toy
+java -cp build TOY [--verbose] PROGRAM.toy [START_HEX]
+```
+
+The assembler output format is one memory record per line:
 
 ```text
 30: 7100
 31: 82FF
 ```
 
-The two digits before the colon are the memory address, and the four digits
-after it are the instruction or data word.
+The first field is an 8-bit memory address and the second is a 16-bit TOY
+instruction or data word.
 
-## Run a generated program
+## Examples
 
-Pass the generated file and the same hexadecimal starting address to the TOY
-simulator:
+| Program | Start | Verified behavior |
+| --- | --- | --- |
+| `sum.ass` | `30` | Sums hexadecimal input until zero |
+| `fibonacci.ass` | `40` | Prints ten Fibonacci values, `0001` through `0059` |
+| `powers2.ass` | `30` | Prints powers of two, `0001` through `4000` |
+| `linkedlist.ass` | `30` | Traverses fixture data at `C0`–`CB` and prints `0001`–`0004` |
+| `primefactor.ass` | `30` | Uses a GCD routine at `22`–`29` and stores factor `0007` for `005B` |
 
-```bash
-java -cp build TOY sum-generated.toy 30
-```
+The linked-list and prime-factor examples require additional initialized
+memory. Their exact assembly, composition, and execution commands are in
+[examples/README.md](examples/README.md).
 
-TOY input values are four-digit hexadecimal words. This example adds 2, 4,
-and 8; the final zero ends input:
+The files under `examples/expected` are curated, runnable reference memory
+images. They demonstrate intended behavior but are not all byte-for-byte
+golden outputs from the current allocator, because valid register and memory
+allocation can produce different instruction streams.
 
-```bash
-printf '0002\n0004\n0008\n0000\n' | \
-  java -cp build TOY sum-generated.toy 30
-```
+## Assembly language
 
-The result is `000E`.
-
-Use `-v` or `--verbose` to display memory and register dumps:
-
-```bash
-java -cp build TOY --verbose sum-generated.toy 30
-```
-
-## Assembly syntax
-
-Commas are optional because the assembler removes them before parsing. A line
-may begin with a label.
+Commas are optional because the parser removes them. A line may begin with a
+label.
 
 | Mnemonic | Operands | Meaning |
 | --- | --- | --- |
@@ -117,44 +146,35 @@ A data definition consists of a label and a hexadecimal word:
 N    000A
 ```
 
-The parser does not currently support comments or blank lines in `.ass`
-files. Keep every source line nonempty.
+## Repository layout
 
-## Included programs and verified behavior
-
-The assembly language programs tested and the intended TOY programs can be found in `examples/`. 
-The following checks were performed by assembling into temporary files and
-then running those files in `TOY`:
-
-| Source | Start | Result |
-| --- | --- | --- |
-| `fibonacci.ass` | `40` | Prints ten values from `0001` through `0059` |
-| `powers2.ass` | `30` | Prints powers of two from `0001` through `4000` |
-| `sum.ass` | `30` | Correctly sums hexadecimal input until zero |
-| `linkedlist.ass` | `30` | Assembles; requires list data at `C0`-`CF` |
-| `primeTest.ass`	 | `30`	| Assembles; requires a subroutine at 22-29 |
-
-`linkedlist.toy` contains sample linked-list memory at `C0`- `CF`. 
-`primeTest.toy` contains the additional routine at `22`- `29`. 
-The corresponding `.ass` sources do not emit those external memory regions by themselves. The code for the external memory regions is in `examples/fixtures/`. See the README.md in `examples/` for more information about these two commands.
-
-## Project files
-
-- `Assembler.java` — parser, symbol handling, register allocation, and TOY
-  record generation.
-- `Symbol.java` and `SymbolTable.java` — symbols, registers, heap, and cache
-  bookkeeping.
-- `TOY.java` — TOY virtual machine and loader.
-- `In.java`, `StdIn.java`, and `StdOut.java` — input/output utilities.
-- `*.ass` — symbolic assembly examples.
-- `*.toy` — assembled programs and experiments.
+```text
+src/main/java/          original assembler implementation
+src/framework/java/     Princeton-derived I/O utilities (GPLv3)
+vendor/TOY.java         user-downloaded simulator (ignored by Git)
+examples/programs/      symbolic assembly programs
+examples/fixtures/      external memory and subroutine records
+examples/expected/      complete runnable reference images
+docs/                   design and experiment notes
+LICENSES/               third-party license texts
+```
 
 ## Known limitations
 
 - Invalid command-line arguments are not validated before use.
-- Blank lines and comments in assembly source can cause parsing failures.
-- Some diagnostics are printed during normal assembly and simulation.
-- Programs that depend on preloaded memory or library routines are not
-  self-contained in their `.ass` files.
-- There is no automated regression-test suite yet.
+- Blank lines and comments in `.ass` files can cause parsing failures.
+- Some debugging diagnostics are printed during normal execution.
+- The assembly language cannot place data at an explicit address, so two
+  examples compose generated code with separate memory fixtures.
+- External binary routines depend on the assembler's current register
+  allocation convention.
+- There is no automated regression-test suite or CI workflow yet.
 
+## Attribution and licensing
+
+`In.java`, `StdIn.java`, and `StdOut.java` come from the Princeton IntroCS
+standard library, which Princeton identifies as GPLv3. The complete license is
+included at `LICENSES/GPL-3.0.txt`. `TOY.java` is not tracked in the current
+revision and is downloaded by the user. Review
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before licensing or
+distributing the combined application.

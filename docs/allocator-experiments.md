@@ -1,12 +1,10 @@
-# Experimental improvements
+# Allocator design experiments
 
-The `improvements` branch preserves the work that was present in the original
-working directory before the stable `main` branch was published. The original
-snapshot is commit `5d05dc6`, and the branch is checked out in the sibling
-directory `Assembler-improvements`.
-
-This branch is experimental. It has not been merged into `main` or pushed to
-GitHub because its larger allocator changes need more testing.
+During development, an experimental implementation explored more aggressive
+register reuse, spilling, and loop-aware relocation. It was not merged into
+`main` because its larger allocator changes introduced parser and control-flow
+regressions. This document preserves the design ideas and test findings without
+presenting that implementation as production-ready code.
 
 ## What changed
 
@@ -43,14 +41,15 @@ GitHub because its larger allocator changes need more testing.
 - Changed the Fibonacci example to start with `0, 1` and run for twelve
   iterations.
 - Renamed the prime-test jump-link symbol from `store` to `func`.
-- Added many Fibonacci and prime-test `.toy` variants recording allocator and
-  control-flow experiments.
+- Produced multiple Fibonacci and prime-factor `.toy` variants while tracing
+  allocator and control-flow behavior. Those scratch artifacts are intentionally
+  excluded from the public repository.
 - Updated the small `test.java` scratch program to exercise the expanded
   symbol-history operations.
-- Disabled several normal load/store trace messages in `TOY.java` while
-  retaining commented debugging statements.
+- Experimented locally with reduced simulator tracing. Those changes were not
+  retained because `TOY.java` is now downloaded directly from Princeton.
 
-## Current verification status
+## Verification status at the end of the experiment
 
 The branch compiles, but it is not yet a replacement for `main`:
 
@@ -58,8 +57,8 @@ The branch compiles, but it is not yet a replacement for `main`:
 - A standalone one-token instruction such as `H` can make the label pre-pass
   access a nonexistent second token and throw
   `ArrayIndexOutOfBoundsException`.
-- Because of that issue, `sum.ass`, `powers2.ass`, `primeTest.ass`, and
-  `linkedlist.ass` did not assemble during the branch-level regression check.
+- Because of that issue, the sum, powers-of-two, prime-factor, and linked-list
+  programs did not assemble during the experimental regression check.
 - Several `.toy` files are intermediate experiments rather than expected
   outputs or automated fixtures.
 
@@ -72,11 +71,5 @@ The branch compiles, but it is not yet a replacement for `main`:
    experiments.
 4. Compare each generated program with its expected records and execute it in
    `TOY`.
-5. Merge allocator changes into `main` in small, independently tested commits.
-
-Useful comparison commands:
-
-```bash
-git diff main..improvements -- '*.java'
-git diff --stat main..improvements
-```
+5. Integrate allocator changes in small, independently tested commits only
+   after the behavior matches the examples under `examples/programs`.
